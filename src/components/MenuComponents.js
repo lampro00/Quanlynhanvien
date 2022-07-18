@@ -1,5 +1,6 @@
 import React, { Components } from "react";
 import { Media } from "reactstrap";
+import { DISHES } from "../shared/dishes";
 
 import {
   Card,
@@ -15,7 +16,11 @@ class Menu extends Component {
     super(props);
 
     this.state = {
+<<<<<<< lab03.2
       selectedDish: null,
+=======
+      dishes: DISHES,
+>>>>>>> local
     };
   }
 
@@ -63,5 +68,4 @@ class Menu extends Component {
     );
   }
 }
-
 export default Menu;

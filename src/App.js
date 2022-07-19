@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-// import logo from "./logo.svg";
+
 import { Navbar, NavbarBrand } from "reactstrap";
-import { DISHES } from "./shared/dishes";
-// import DishDetail from "./components/DishdetailComponent ";
-import Menu from "./components/MenuComponents";
+import StaffList from "./components/StaffListComponent";
+import { STAFFS } from "./shared/staffs";
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dishes: DISHES,
+      staffs: STAFFS,
     };
   }
   render() {
@@ -16,10 +15,10 @@ class App extends Component {
       <div className="App">
         <Navbar dark color="primary">
           <div className="container">
-            <NavbarBrand href="/"> Ristorante con Funsion</NavbarBrand>
+            <NavbarBrand href="/"> Ứng dụng quản lí nhân sự v1.0 </NavbarBrand>
           </div>
         </Navbar>
-        <Menu dishes={this.state.dishes} />
+        <StaffList staffs={this.state.staffs} />
       </div>
     );
   }

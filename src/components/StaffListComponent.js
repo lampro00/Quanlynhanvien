@@ -22,7 +22,6 @@ class StaffList extends Component {
     this.setState({ Hiden: b });
   }
   render() {
-    console.log(this.state.selectedSaffs);
     const menu = this.props.staffs.map((staff) => {
       return (
         <div className={this.state.classDefault} key={staff.id}>
@@ -57,10 +56,10 @@ class StaffList extends Component {
         >
           5 Cột
         </button>
-        <p style={{ display: this.state.Hiden }}>Bấm để xem thông tin</p>
-        <div className="row">
-          <Staff staff={this.state.selectedSaffs} />
-        </div>
+        <p style={{ display: this.state.Hiden }}>
+          Bấm để xem thông tin nhân viên
+        </p>
+        <Staff staff={this.state.selectedSaffs} />
       </div>
     );
   }

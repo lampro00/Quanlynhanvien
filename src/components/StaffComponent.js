@@ -8,7 +8,8 @@ class Staff extends Component {
   renderStaff(Staff) {
     return (
       <Card>
-        {console.log(Staff.department.name)}
+        <CardImg src={Staff.image}></CardImg>
+
         <CardTitle>Họ Và Tên: {Staff.name} </CardTitle>
         <ul className="list-unstyled">
           <li>Ngày sinh: {Staff.doB} </li>

@@ -9,6 +9,7 @@ class StaffList extends Component {
     this.state = {
       selectedSaffs: null,
       classDefault: "col-12 col-md-3 m-1",
+      Hiden: null,
     };
   }
   onStasffSelect(staff) {
@@ -17,12 +18,19 @@ class StaffList extends Component {
   col(a) {
     this.setState({ classDefault: a });
   }
+  Hiden(b) {
+    this.setState({ Hiden: b });
+  }
   render() {
     console.log(this.state.selectedSaffs);
     const menu = this.props.staffs.map((staff) => {
       return (
         <div className={this.state.classDefault} key={staff.id}>
-          <Card onClick={() => this.onStasffSelect(staff)}>
+          <Card
+            onClick={() => {
+              this.onStasffSelect(staff), this.Hiden("none");
+            }}
+          >
             <CardTitle>{staff.name}</CardTitle>
           </Card>
         </div>
@@ -31,10 +39,25 @@ class StaffList extends Component {
     return (
       <div className="container">
         <div className="row">{menu}</div>
-        <button onClick={() => this.col("col-12 col-lg-6 m-1")}>1Cột</button>
-        <button onClick={() => this.col("col-12 col-lg-4 m-1")}>2 Cột</button>
-        <button onClick={() => this.col("col-12 col-lg-3 m-1")}>3 Cột</button>
-        <p onClick={this.shoot}>Bấm để xem thông tin</p>;
+        <button
+          className="btn-success"
+          onClick={() => this.col("col-12 col-lg-4 m-1")}
+        >
+          2 Cột
+        </button>
+        <button
+          className="btn-success"
+          onClick={() => this.col("col-12 col-lg-3 m-1")}
+        >
+          3 Cột
+        </button>
+        <button
+          className="btn-success"
+          onClick={() => this.col("col-12 col-lg-2 m-1")}
+        >
+          5 Cột
+        </button>
+        <p style={{ display: this.state.Hiden }}>Bấm để xem thông tin</p>
         <div className="row">
           <Staff staff={this.state.selectedSaffs} />
         </div>

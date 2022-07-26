@@ -2,7 +2,7 @@ import React from "react";
 // import { Media } from "reactstrap";
 // import { DISHES } from "../shared/dishes";
 
-import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
+import { Card, CardText, CardBody, CardTitle } from "reactstrap";
 
 function RenderDish({ dish }) {
   return (

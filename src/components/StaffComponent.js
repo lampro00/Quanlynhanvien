@@ -3,14 +3,26 @@ import React, { Component } from "react";
 // import { DISHES } from "../shared/dishes";
 import { DEPARTMENTS } from "../shared/staffs";
 import dateFormat from "dateformat";
+import { Link } from "react-router-dom";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "reactstrap";
 
-import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
-class Staff extends Component {
-  renderStaff(Staff) {
-    return (
-      <div>
-        <CardImg src={Staff.image}></CardImg>
-        <div>
+function RenderStaffItem(Staff) {
+  console.log(Staff);
+  return (
+    <div>
+      <div className="row">
+        <div className="col-12 col-xl-3 col-md-4">
+          <CardImg src={Staff.image}></CardImg>
+        </div>
+        <div className="col-12 col-xl-9 col-md-8  ">
           <ul className="list-unstyled">
             <CardTitle>Họ Và Tên: {Staff.name} </CardTitle>
             <li>Ngày sinh: {dateFormat(Staff.doB, "dd/mm/yyyy")} </li>
@@ -23,18 +35,23 @@ class Staff extends Component {
           </ul>
         </div>
       </div>
-    );
-  }
-
-  render() {
-    if (this.props.staff != null)
-      return (
-        <div className="container">
-          <div className="row">{this.renderStaff(this.props.staff)}</div>
-        </div>
-      );
-    else return <div></div>;
-  }
+    </div>
+  );
 }
 
-export default Staff;
+function RenderStaff(props) {
+  return (
+    <div>
+      <div className="container">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/Nhanvien">Nhân Viên</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{props.Staff.name}</BreadcrumbItem>
+        </Breadcrumb>
+        <div className="row">{RenderStaffItem(props.Staff)}</div>
+      </div>
+    </div>
+  );
+}
+export default RenderStaff;

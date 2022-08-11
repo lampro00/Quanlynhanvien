@@ -13,18 +13,18 @@ class Main extends Component {
     super(props);
     this.state = {
       staffs: STAFFS,
+
       department: DEPARTMENTS,
     };
   }
 
   render() {
-    const StaffWithId = ({ match }) => {
-      console.log({ match });
+    const StaffWithId = (props) => {
       return (
         <RenderStaff
           Staff={
             this.state.staffs.filter(
-              (Staff) => Staff.id === parseInt(match.params.StaffId, 10)
+              (Staff) => Staff.id === parseInt(props.match.params.a, 10)
             )[0]
           }
         />
@@ -33,14 +33,15 @@ class Main extends Component {
 
     return (
       <div>
-        <Header />
+        <Header staffs={this.state.staffs} />
         <Switch>
           <Route
             exact
             path="/Staff"
             component={() => <StaffList staffs={this.state.staffs} />}
           />
-          <Route path="/Nhanvien/:StaffId" component={StaffWithId} />
+
+          <Route path="/Nhanvien/:a" component={StaffWithId} />
           <Route
             exact
             path="/Department"

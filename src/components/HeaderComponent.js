@@ -2,14 +2,21 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { STAFFS } from "../shared/staffs";
 import {
-  Nav,
   Navbar,
   NavbarBrand,
+  Nav,
   NavbarToggler,
   Collapse,
   NavItem,
   Jumbotron,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
   Input,
+  Label,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
@@ -19,6 +26,7 @@ class Header extends Component {
     this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+      search: "",
     };
   }
   toggleNav() {
@@ -60,13 +68,6 @@ class Header extends Component {
                 </NavItem>
               </Nav>
             </Collapse>
-
-            <div className="input">
-              <Input />
-            </div>
-            <Link to="/Staff">
-              <i class="fa fa-search ml-2" aria-hidden="true"></i>
-            </Link>
           </div>
         </Navbar>
       </React.Fragment>

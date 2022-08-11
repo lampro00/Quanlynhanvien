@@ -14,8 +14,19 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 function RenderSalary(props) {
-  console.log(props);
-  const luong = props.salary.map((Salary) => {
+  // });
+  const newStaffs = props.salary.map((staff) => {
+    return {
+      ...staff,
+      salary: staff.salaryScale * 3000000 + 200000 * staff.overTime,
+    };
+  });
+  console.log(
+    "newStaffs",
+    newStaffs.sort((a, b) => b.salary - a.salary)
+  );
+  console.log(props.salary);
+  const luong = newStaffs.map((Salary) => {
     return (
       <div className="col-xl-4 col-md-6">
         <Row>
@@ -25,7 +36,7 @@ function RenderSalary(props) {
               <CardText>Mã nhân viên: {Salary.id}</CardText>
               <CardText>Hệ số lương: {Salary.salaryScale}</CardText>
               <CardText>Số ngày làm thêm: {Salary.overTime}</CardText>
-              <CardFooter>
+              <CardFooter className="text-center">
                 Lương:{" "}
                 {Math.round(
                   Salary.salaryScale * 3000000 + 200000 * Salary.overTime

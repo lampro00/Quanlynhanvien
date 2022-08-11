@@ -35,11 +35,10 @@ ol.breadcrumb {
   background: none;
 }
 .fa-search {
-  padding: 10px;
+  margin-left: 10px;
 }
-.fa-search:hover {
+.button:hover {
   cursor: pointer;
-  background-color: #d1c4e9;
 }
 .department {
   background-color: #9575cd;
@@ -49,4 +48,10 @@ ol.breadcrumb {
 }
 .background-color {
   background-color: #6fbfdf;
+}
+button.btn.btn-secondary {
+  margin-left: 5px;
+}
+.input {
+  display: inline-flex;
 }

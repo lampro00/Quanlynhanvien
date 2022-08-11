@@ -60,13 +60,6 @@ class Header extends Component {
                 </NavItem>
               </Nav>
             </Collapse>
-
-            <div className="input">
-              <Input />
-            </div>
-            <Link to="/Staff">
-              <i class="fa fa-search ml-2" aria-hidden="true"></i>
-            </Link>
           </div>
         </Navbar>
       </React.Fragment>

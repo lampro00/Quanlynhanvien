@@ -11,11 +11,26 @@ import {
   CardBody,
   Row,
   CardFooter,
+  Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 function RenderSalary(props) {
-  console.log(props);
-  const luong = props.salary.map((Salary) => {
+  const newStaffs = props.salary.map((staff) => {
+    return {
+      ...staff,
+      salary: staff.salaryScale * 3000000 + 200000 * staff.overTime,
+    };
+  });
+  console.log("newStaffs");
+  function sapxep() {
+    console.log("ok");
+    newStaffs.sort((a, b) => b.salary - a.salary);
+    console.log(newStaffs);
+
+    return newStaffs;
+  }
+  console.log(newStaffs);
+  const luong = newStaffs.map((Salary) => {
     return (
       <div className="col-xl-4 col-md-6">
         <Row>
@@ -37,15 +52,26 @@ function RenderSalary(props) {
       </div>
     );
   });
+
   return (
     <div>
       <div className="container m-5">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/Staff">Nhân Viên</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>Bảng lương</BreadcrumbItem>
-        </Breadcrumb>
+        <div className="row">
+          <div className="col-12 col-md-3">
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/Staff">Nhân Viên</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem>Bảng lương</BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+
+          <div className="col-12 col-md-9">
+            <Button className="button" onClick={() => sapxep()}>
+              Sắp xếp
+            </Button>
+          </div>
+        </div>
         <div className="row">{luong}</div>
       </div>
     </div>

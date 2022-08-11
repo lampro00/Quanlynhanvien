@@ -34,10 +34,11 @@ address {
 ol.breadcrumb {
   background: none;
 }
-.fa-search {
+.button {
   padding: 10px;
+  font-size: 11px;
 }
-.fa-search:hover {
+.button:hover {
   cursor: pointer;
   background-color: #d1c4e9;
 }

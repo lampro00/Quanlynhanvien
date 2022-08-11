@@ -30,13 +30,6 @@ class StaffList extends Component {
     this.state = {
       input: "",
       isModalOpen: false,
-      name: "",
-      doB: "",
-      salaryScale: "",
-      startDate: "",
-      department: "",
-      annualLeave: "",
-      overTime: "",
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -79,28 +72,24 @@ class StaffList extends Component {
     });
 
     return (
-      <div>
-        <div className="container p-4 background-color">
-          <div className="row mb-3">
-            <div className="col-12 col-md-4">
-              <h2>Nhân Viên</h2>
-            </div>
-            <div className="input col-12 col-md-5">
-              <Input
-                type="text"
-                id="username"
-                name="username"
-                innerRef={(input) => (this.username = input)}
-              />
-            </div>
-            <div className="input col-12 col-md-3">
-              <Button className="button" onClick={this.handleSearch}>
-                <span class="fa fa-search ml-1" aria-hidden="true"></span>
-              </Button>
-            </div>
+      <div className="container p-4 background-color">
+        <div className="row mb-3">
+          <div className="col-12 col-md-4">
+            <h2>Nhân Viên</h2>
           </div>
-          <div className="row">{Nhanvien}</div>
+          <div className="input col-12 col-md-5">
+            <Input
+              type="text"
+              id="username"
+              name="username"
+              innerRef={(input) => (this.username = input)}
+            />
+            <Button className="button" onClick={this.handleSearch}>
+              <span class="fa fa-search ml-" aria-hidden="true"></span>
+            </Button>
+          </div>
         </div>
+        <div className="row">{Nhanvien}</div>
       </div>
     );
   }

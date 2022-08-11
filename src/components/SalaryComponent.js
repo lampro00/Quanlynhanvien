@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   Card,
   CardImg,
@@ -21,15 +21,11 @@ function RenderSalary(props) {
       salary: staff.salaryScale * 3000000 + 200000 * staff.overTime,
     };
   });
-  console.log("newStaffs");
-  function sapxep() {
-    console.log("ok");
+  const [sortSalary, setsortSalary] = useState(false);
+  if (sortSalary) {
     newStaffs.sort((a, b) => b.salary - a.salary);
-    console.log(newStaffs);
-
-    return newStaffs;
   }
-  console.log(newStaffs);
+
   const luong = newStaffs.map((Salary) => {
     return (
       <div className="col-xl-4 col-md-6">
@@ -67,8 +63,11 @@ function RenderSalary(props) {
           </div>
 
           <div className="col-12 col-md-9">
-            <Button className="button" onClick={() => sapxep()}>
-              Sắp xếp
+            <Button
+              className="button"
+              onClick={() => setsortSalary(!sortSalary)}
+            >
+              Sắp xếp lương giảm dần
             </Button>
           </div>
         </div>

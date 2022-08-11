@@ -51,3 +51,6 @@ ol.breadcrumb {
 .background-color {
   background-color: #6fbfdf;
 }
+.input {
+  display: inline-flex;
+}

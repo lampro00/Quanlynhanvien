@@ -22,7 +22,10 @@ import {
   FormGroup,
   Input,
   Label,
+  Col,
+  FormFeedback,
 } from "reactstrap";
+import { DEPARTMENTS } from "../shared/staffs";
 
 class StaffList extends Component {
   constructor(props) {
@@ -32,17 +35,32 @@ class StaffList extends Component {
       isModalOpen: false,
       name: "",
       doB: "",
-      salaryScale: "",
+      salaryScale: 1.1,
       startDate: "",
-      department: "",
-      annualLeave: "",
-      overTime: "",
+      department: {
+        id: "",
+        name: "IT",
+        numberOfStaff: "",
+      },
+      annualLeave: 1,
+      overTime: 0,
+      touched: {
+        name: false,
+        doB: false,
+        startDate: false,
+      },
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handlesubmit = this.handlesubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
+  handlclick = (field) => (evt) => {
+    this.setState({
+      department: { ...this.state.department, name: evt.target.value },
+    });
+  };
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
@@ -60,30 +78,61 @@ class StaffList extends Component {
   handleSearch() {
     this.setState({ input: this.username.value.toUpperCase() });
   }
+
+  handleBlur = (field) => (evt) => {
+    this.setState({
+      touched: { ...this.state.touched, [field]: true },
+    });
+  };
+  validate(name, startDate, doB) {
+    const errors = {
+      name: "",
+      startDate: "",
+      doB: "",
+    };
+    if (this.state.touched.name && name.length == 0)
+      errors.name = "Yêu Cầu Nhập";
+    if (this.state.touched.doB && startDate.length == 0)
+      errors.doB = "Yêu Cầu Nhập";
+    if (this.state.touched.startDate && doB.length == 0)
+      errors.startDate = "Yêu Cầu Nhập";
+    return errors;
+  }
   handlesubmit(event) {
-    // this.setState({ name: this.name.value });
     const newStaff = {
       id: this.props.staffs.length,
       name: this.state.name,
       doB: this.state.doB,
       salaryScale: this.state.salaryScale,
       startDate: this.state.startDate,
-      department: this.state.department,
+      department: {
+        name: this.state.department,
+      },
       annualLeave: this.state.annualLeave,
       overTime: this.state.overTime,
-
       image: "/assets/images/alberto.png",
     };
-    this.props.staffs.push(newStaff);
-    this.props.staffs.department.push(newStaff);
+    if (
+      this.state.touched.name &&
+      this.state.touched.doB &&
+      this.state.touched.startDate
+    ) {
+      console.log(this.state.touched);
+      this.props.staffs.push(newStaff);
+      this.setState({
+        isModalOpen: !this.state.isModalOpen,
+      });
 
-    console.log(this.props.staffs);
-    this.setState({
-      isModalOpen: !this.state.isModalOpen,
-    });
-    event.preventDefault();
+      event.preventDefault();
+    }
   }
-  render(props) {
+  render() {
+    console.log(this.state);
+    const errors = this.validate(
+      this.state.name,
+      this.state.doB,
+      this.state.startDate
+    );
     const search = this.props.staffs.filter((el) => {
       if (el.name.toUpperCase().includes(this.state.input) === true) {
         return el;
@@ -136,10 +185,14 @@ class StaffList extends Component {
                   <Input
                     type="text"
                     id="name"
-                    value={this.state.name}
                     name="name"
+                    value={this.state.name}
+                    valid={errors.name === ""}
+                    invalid={errors.name !== ""}
+                    onBlur={this.handleBlur("name")}
                     onChange={this.handleInputChange}
                   />
+                  <FormFeedback>{errors.name}</FormFeedback>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="doB">Ngày sinh</Label>
@@ -148,8 +201,12 @@ class StaffList extends Component {
                     id="doB"
                     value={this.state.tenState}
                     name="doB"
+                    valid={errors.doB === ""}
+                    invalid={errors.doB !== ""}
+                    onBlur={this.handleBlur("doB")}
                     onChange={this.handleInputChange}
                   />
+                  <FormFeedback>{errors.doB}</FormFeedback>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="startDate">Ngày vào công ty</Label>
@@ -158,18 +215,29 @@ class StaffList extends Component {
                     id="startDate"
                     value={this.state.tenState}
                     name="startDate"
+                    valid={errors.startDate === ""}
+                    invalid={errors.startDate !== ""}
+                    onBlur={this.handleBlur("startDate")}
                     onChange={this.handleInputChange}
                   />
+                  <FormFeedback>{errors.startDate}</FormFeedback>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="department">Phòng ban</Label>
                   <Input
-                    type="list"
+                    type="select"
                     id="department"
                     name="department"
-                    value={this.state.department}
+                    value={this.state.department.name}
                     onChange={this.handleInputChange}
-                  />
+                    onClick={() => this.handlclick()}
+                  >
+                    <option>IT</option>
+                    <option>HR</option>
+                    <option>Marketing</option>
+                    <option>Finance</option>
+                    <option>Sale</option>
+                  </Input>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="salaryScale">Hệ số lương</Label>

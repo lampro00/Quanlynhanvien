@@ -39,7 +39,7 @@ class StaffList extends Component {
       startDate: "",
       department: {
         id: "",
-        name: "IT",
+        name: "",
         numberOfStaff: "",
       },
       annualLeave: 1,
@@ -49,6 +49,7 @@ class StaffList extends Component {
         doB: false,
         startDate: false,
       },
+      check: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -82,6 +83,7 @@ class StaffList extends Component {
   handleBlur = (field) => (evt) => {
     this.setState({
       touched: { ...this.state.touched, [field]: true },
+      check: true,
     });
   };
   validate(name, startDate, doB) {
@@ -96,38 +98,44 @@ class StaffList extends Component {
       errors.doB = "Yêu Cầu Nhập";
     if (this.state.touched.startDate && doB.length == 0)
       errors.startDate = "Yêu Cầu Nhập";
+
     return errors;
   }
+
   handlesubmit(event) {
-    const newStaff = {
-      id: this.props.staffs.length,
-      name: this.state.name,
-      doB: this.state.doB,
-      salaryScale: this.state.salaryScale,
-      startDate: this.state.startDate,
-      department: {
-        name: this.state.department,
-      },
-      annualLeave: this.state.annualLeave,
-      overTime: this.state.overTime,
-      image: "/assets/images/alberto.png",
-    };
     if (
       this.state.touched.name &&
       this.state.touched.doB &&
       this.state.touched.startDate
     ) {
+      const newStaff = {
+        id: this.props.staffs.length,
+        name: this.state.name,
+        doB: this.state.doB,
+        salaryScale: this.state.salaryScale,
+        startDate: this.state.startDate,
+        department: {
+          name: this.state.department,
+        },
+        annualLeave: this.state.annualLeave,
+        overTime: this.state.overTime,
+        image: "/assets/images/alberto.png",
+      };
       console.log(this.state.touched);
       this.props.staffs.push(newStaff);
       this.setState({
         isModalOpen: !this.state.isModalOpen,
       });
+      event.preventDefault();
+    } else if (!this.state.check) {
+      alert("Vui lòng không để trống");
 
       event.preventDefault();
     }
   }
   render() {
     console.log(this.state);
+
     const errors = this.validate(
       this.state.name,
       this.state.doB,
@@ -232,6 +240,7 @@ class StaffList extends Component {
                     onChange={this.handleInputChange}
                     onClick={() => this.handlclick()}
                   >
+                    <option> </option>
                     <option>IT</option>
                     <option>HR</option>
                     <option>Marketing</option>

@@ -22,11 +22,12 @@ import {
   FormGroup,
   Input,
   Label,
+  Row,
   Col,
   FormFeedback,
 } from "reactstrap";
 import { DEPARTMENTS } from "../shared/staffs";
-
+import { Control, LocalForm, Errors } from "react-redux-form";
 class StaffList extends Component {
   constructor(props) {
     super(props);
@@ -86,61 +87,33 @@ class StaffList extends Component {
       check: true,
     });
   };
-  validate(name, startDate, doB) {
-    const errors = {
-      name: "",
-      startDate: "",
-      doB: "",
+
+  handlesubmit(value) {
+    const newStaff = {
+      id: this.props.staffs.length,
+      name: value.name,
+      doB: value.doB,
+      salaryScale: value.salaryScale,
+      startDate: value.startDate,
+      department: {
+        name: value.department,
+      },
+      annualLeave: value.annualLeave,
+      overTime: value.overTime,
+      image: "/assets/images/alberto.png",
     };
-    if (this.state.touched.name && name.length == 0)
-      errors.name = "Yêu Cầu Nhập";
-    if (this.state.touched.doB && startDate.length == 0)
-      errors.doB = "Yêu Cầu Nhập";
-    if (this.state.touched.startDate && doB.length == 0)
-      errors.startDate = "Yêu Cầu Nhập";
-
-    return errors;
-  }
-
-  handlesubmit(event) {
-    if (
-      this.state.touched.name &&
-      this.state.touched.doB &&
-      this.state.touched.startDate
-    ) {
-      const newStaff = {
-        id: this.props.staffs.length,
-        name: this.state.name,
-        doB: this.state.doB,
-        salaryScale: this.state.salaryScale,
-        startDate: this.state.startDate,
-        department: {
-          name: this.state.department,
-        },
-        annualLeave: this.state.annualLeave,
-        overTime: this.state.overTime,
-        image: "/assets/images/alberto.png",
-      };
-      console.log(this.state.touched);
-      this.props.staffs.push(newStaff);
-      this.setState({
-        isModalOpen: !this.state.isModalOpen,
-      });
-      event.preventDefault();
-    } else if (!this.state.check) {
-      alert("Vui lòng không để trống");
-
-      event.preventDefault();
-    }
+    console.log(this.props.staffs);
+    this.props.staffs.push(newStaff);
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
   }
   render() {
     console.log(this.state);
 
-    const errors = this.validate(
-      this.state.name,
-      this.state.doB,
-      this.state.startDate
-    );
+    const required = (val) => val && val.length;
+    const minLength = (len) => (val) => val && val.length >= len;
+    const isNumber = (val) => !isNaN(Number(val));
     const search = this.props.staffs.filter((el) => {
       if (el.name.toUpperCase().includes(this.state.input) === true) {
         return el;
@@ -187,101 +160,181 @@ class StaffList extends Component {
           <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
             <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
             <ModalBody>
-              <Form onSubmit={this.handlesubmit}>
-                <FormGroup>
-                  <Label htmlFor="name">Tên</Label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={this.state.name}
-                    valid={errors.name === ""}
-                    invalid={errors.name !== ""}
-                    onBlur={this.handleBlur("name")}
-                    onChange={this.handleInputChange}
-                  />
-                  <FormFeedback>{errors.name}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="doB">Ngày sinh</Label>
-                  <Input
-                    type="date"
-                    id="doB"
-                    value={this.state.tenState}
-                    name="doB"
-                    valid={errors.doB === ""}
-                    invalid={errors.doB !== ""}
-                    onBlur={this.handleBlur("doB")}
-                    onChange={this.handleInputChange}
-                  />
-                  <FormFeedback>{errors.doB}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="startDate">Ngày vào công ty</Label>
-                  <Input
-                    type="date"
-                    id="startDate"
-                    value={this.state.tenState}
-                    name="startDate"
-                    valid={errors.startDate === ""}
-                    invalid={errors.startDate !== ""}
-                    onBlur={this.handleBlur("startDate")}
-                    onChange={this.handleInputChange}
-                  />
-                  <FormFeedback>{errors.startDate}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="department">Phòng ban</Label>
-                  <Input
-                    type="select"
-                    id="department"
-                    name="department"
-                    value={this.state.department.name}
-                    onChange={this.handleInputChange}
-                    onClick={() => this.handlclick()}
-                  >
-                    <option> </option>
-                    <option>IT</option>
-                    <option>HR</option>
-                    <option>Marketing</option>
-                    <option>Finance</option>
-                    <option>Sale</option>
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="salaryScale">Hệ số lương</Label>
-                  <Input
-                    type="text"
-                    id="salaryScale"
-                    value={this.state.salaryScale}
-                    name="salaryScale"
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="annualLeave">Số ngày nghỉ còn lại</Label>
-                  <Input
-                    type="text"
-                    id="annualLeave"
-                    value={this.state.annualLeave}
-                    name="annualLeave"
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="overTime">Số ngày làm thêm</Label>
-                  <Input
-                    type="text"
-                    id="overTime"
-                    name="overTime"
-                    value={this.state.overTime}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
+              <LocalForm onSubmit={(values) => this.handlesubmit(values)}>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="name">Tên</Label>
+                    <Control.text
+                      model=".name"
+                      id="name"
+                      name="name"
+                      placeholder=" Name"
+                      className="form-control"
+                      validators={{
+                        required,
+                        minLength: minLength(2),
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".name"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                        minLength: "Nhập nhiều hơn 2 kí tự",
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="doB">Ngày sinh</Label>
+                    <Control
+                      type="date"
+                      model=".doB"
+                      id="doB"
+                      name="doB"
+                      placeholder=" doB"
+                      className="form-control"
+                      validators={{
+                        required,
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".doB"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="startDate">Ngày vào công ty</Label>
+                    <Control
+                      type="date"
+                      model=".startDate"
+                      id="startDate"
+                      name="startDate"
+                      placeholder=" startDate"
+                      className="form-control"
+                      validators={{
+                        required,
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".startDate"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="department">Phòng ban</Label>
+                    <Control.select
+                      model=".department"
+                      id="department"
+                      name="department"
+                      placeholder=" department"
+                      className="form-control"
+                      validators={{
+                        required,
+                      }}
+                    >
+                      <option>Yêu cầu chọn </option>
+                      <option value="IT">IT</option>
+                      <option value="HR">HR</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Sale">Sale</option>
+                    </Control.select>
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="salaryScale">Hệ số lương</Label>
+                    <Control.text
+                      model=".salaryScale"
+                      id="salaryScale"
+                      name="salaryScale"
+                      placeholder=" 1"
+                      className="form-control"
+                      validators={{
+                        required,
+                        isNumber,
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".salaryScale"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                        isNumber: "Chỉ được nhập số",
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="annualLeave">Số ngày nghỉ còn lại</Label>
+
+                    <Control.text
+                      model=".annualLeave"
+                      id="annualLeave"
+                      name="annualLeave"
+                      placeholder=" 1"
+                      className="form-control"
+                      validators={{
+                        required,
+                        isNumber,
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".annualLeave"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                        isNumber: "Chỉ được nhập số",
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={10}>
+                    <Label htmlFor="overTime">Số ngày làm thêm</Label>
+
+                    <Control.text
+                      model=".overTime"
+                      id="overTime"
+                      name="overTime"
+                      placeholder=" 0"
+                      className="form-control"
+                      validators={{
+                        required,
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".overTime"
+                      show="touched"
+                      messages={{
+                        required: "Yêu cầu nhập",
+                      }}
+                    />
+                  </Col>
+                </Row>
                 <Button type="submit" value="submit" color="primary">
                   Add
                 </Button>
-              </Form>
+              </LocalForm>
             </ModalBody>
           </Modal>
         </div>

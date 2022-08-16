@@ -26,7 +26,7 @@ import {
   FormFeedback,
 } from "reactstrap";
 import { DEPARTMENTS } from "../shared/staffs";
-
+import { Control, LocalForm, Errors } from "react-redux-form";
 class StaffList extends Component {
   constructor(props) {
     super(props);
@@ -94,6 +94,8 @@ class StaffList extends Component {
     };
     if (this.state.touched.name && name.length == 0)
       errors.name = "Yêu Cầu Nhập";
+    if (this.state.touched.name && 0 < name.length <= 2)
+      errors.name = "Phải nhập lớn hơn 2 kí tự";
     if (this.state.touched.doB && startDate.length == 0)
       errors.doB = "Yêu Cầu Nhập";
     if (this.state.touched.startDate && doB.length == 0)

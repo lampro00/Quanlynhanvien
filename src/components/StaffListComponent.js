@@ -26,7 +26,7 @@ import {
   FormFeedback,
 } from "reactstrap";
 import { DEPARTMENTS } from "../shared/staffs";
-import { Control, LocalForm, Errors } from "react-redux-form";
+
 class StaffList extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +35,7 @@ class StaffList extends Component {
       isModalOpen: false,
       name: "",
       doB: "",
-      salaryScale: 1.1,
+      salaryScale: 1,
       startDate: "",
       department: {
         id: "",
@@ -48,8 +48,9 @@ class StaffList extends Component {
         name: false,
         doB: false,
         startDate: false,
+        annualLeave: false,
+        overTime: false,
       },
-      check: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -86,21 +87,27 @@ class StaffList extends Component {
       check: true,
     });
   };
-  validate(name, startDate, doB) {
+  validate(name, startDate, doB, annualLeave, overTime) {
     const errors = {
       name: "",
       startDate: "",
       doB: "",
+      overTime: "",
+      annualLeave: "",
     };
     if (this.state.touched.name && name.length == 0)
       errors.name = "Yêu Cầu Nhập";
-    if (this.state.touched.name && 0 < name.length <= 2)
-      errors.name = "Phải nhập lớn hơn 2 kí tự";
+    else if (this.state.touched.name && name.length <= 2)
+      errors.name = "Nhập lớn hơn 2 kí tự";
     if (this.state.touched.doB && startDate.length == 0)
       errors.doB = "Yêu Cầu Nhập";
     if (this.state.touched.startDate && doB.length == 0)
       errors.startDate = "Yêu Cầu Nhập";
-
+    const reg = /^\d+$/;
+    if (this.state.touched.annualLeave && !reg.test(annualLeave))
+      errors.annualLeave = "Chỉ được nhập số";
+    if (this.state.touched.overTime && !reg.test(overTime))
+      errors.overTime = "Chỉ được nhập số";
     return errors;
   }
 
@@ -141,8 +148,11 @@ class StaffList extends Component {
     const errors = this.validate(
       this.state.name,
       this.state.doB,
-      this.state.startDate
+      this.state.startDate,
+      this.state.annualLeave,
+      this.state.overTime
     );
+
     const search = this.props.staffs.filter((el) => {
       if (el.name.toUpperCase().includes(this.state.input) === true) {
         return el;
@@ -267,8 +277,12 @@ class StaffList extends Component {
                     id="annualLeave"
                     value={this.state.annualLeave}
                     name="annualLeave"
+                    valid={errors.annualLeave === ""}
+                    invalid={errors.annualLeave !== ""}
+                    onBlur={this.handleBlur("annualLeave")}
                     onChange={this.handleInputChange}
                   />
+                  <FormFeedback>{errors.annualLeave}</FormFeedback>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="overTime">Số ngày làm thêm</Label>
@@ -277,8 +291,12 @@ class StaffList extends Component {
                     id="overTime"
                     name="overTime"
                     value={this.state.overTime}
+                    valid={errors.overTime === ""}
+                    invalid={errors.overTime !== ""}
+                    onBlur={this.handleBlur("overTime")}
                     onChange={this.handleInputChange}
                   />
+                  <FormFeedback>{errors.overTime}</FormFeedback>
                 </FormGroup>
                 <Button type="submit" value="submit" color="primary">
                   Add

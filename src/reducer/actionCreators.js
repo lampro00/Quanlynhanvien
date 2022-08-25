@@ -18,20 +18,21 @@ export const fetchDishes = () => (dispatch) => {
         if (response.ok) {
           return response;
         } else {
-          var err = new Error(
-            `Error: ${response.status}: ${response.statusText} `
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
           );
-          throw err;
+          error.response = response;
+          throw error;
         }
       },
-
-      (err) => {
-        throw new Error(err.message);
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
     .then((dishes) => dispatch(addDishes(dishes)))
-    .catch((err) => dispatch(dishesFailed(err.message)));
+    .catch((error) => dispatch(dishesFailed(error.message)));
 };
 
 /*COMMENTS ACTIONS*/
@@ -40,7 +41,6 @@ export const addComment = (comment) => ({
   type: AT.ADD_COMMENT,
   payload: comment,
 });
-
 export const addComments = (comments) => ({
   type: AT.ADD_COMMENTS,
   payload: comments,
@@ -58,32 +58,33 @@ export const fetchComments = () => (dispatch) => {
         if (response.ok) {
           return response;
         } else {
-          var err = new Error(
-            `Error: ${response.status}: ${response.statusText} `
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
           );
-          throw err;
+          error.response = response;
+          throw error;
         }
       },
-
-      (err) => {
-        throw new Error(err.message);
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
     .then((comments) => dispatch(addComments(comments)))
-    .catch((err) => dispatch(commentsFailed(err.message)));
+    .catch((error) => dispatch(commentsFailed(error.message)));
 };
 
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
   const newComment = {
-    dishId,
-    rating,
-    author,
-    comment,
-    date: new Date().toISOString(),
+    dishId: dishId,
+    rating: rating,
+    author: author,
+    comment: comment,
   };
+  newComment.date = new Date().toISOString();
 
-  return fetch(`${baseUrl}comments`, {
+  return fetch(baseUrl + "comments", {
     method: "POST",
     body: JSON.stringify(newComment),
     headers: {
@@ -96,22 +97,22 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         if (response.ok) {
           return response;
         } else {
-          var err = new Error(
-            `Error: ${response.status}: ${response.statusText} `
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
           );
-          throw err;
+          error.response = response;
+          throw error;
         }
       },
-
-      (err) => {
-        throw new Error(err.message);
+      (error) => {
+        throw error;
       }
     )
     .then((response) => response.json())
-    .then((comment) => dispatch(addComment(comment)))
-    .catch((err) => {
-      console.log(`Post error: ${err.message}`);
-      alert("Error on post comment");
+    .then((response) => dispatch(addComment(response)))
+    .catch((error) => {
+      console.log("post comments", error.message);
+      alert("Your comment could not be posted\nError: " + error.message);
     });
 };
 
@@ -131,26 +132,28 @@ export const promosLoading = () => ({ type: AT.PROMOS_LOADING });
 
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading());
+
   return fetch(baseUrl + "promotions")
     .then(
       (response) => {
         if (response.ok) {
           return response;
         } else {
-          var err = new Error(
-            `Error: ${response.status}: ${response.statusText} `
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
           );
-          throw err;
+          error.response = response;
+          throw error;
         }
       },
-
-      (err) => {
-        throw new Error(err.message);
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
     .then((promos) => dispatch(addPromos(promos)))
-    .catch((err) => dispatch(promosFailed(err.message)));
+    .catch((error) => dispatch(promosFailed(error.message)));
 };
 
 /*LEADERS ACTIONS*/

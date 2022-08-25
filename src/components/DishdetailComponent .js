@@ -32,13 +32,13 @@ class CommentForm extends Component {
     this.setState({ isModalOpen: !this.state.isModalOpen });
   };
 
-  handleSubmit = (vals) => {
+  handleSubmit = (value) => {
     this.toggleModal();
     this.props.postComment(
       this.props.dishId,
-      vals.rating,
-      vals.author,
-      vals.comment
+      value.rating,
+      value.author,
+      value.comment
     );
   };
 
@@ -127,7 +127,7 @@ const RenderDish = ({ dish }) =>
       }}
     >
       <Card>
-        <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+        <CardImg top src={baseUrl + dish.image} alt={dish.name} />
         <CardBody>
           <CardTitle>{dish.name}</CardTitle>
           <CardText>{dish.description}</CardText>
@@ -138,7 +138,7 @@ const RenderDish = ({ dish }) =>
     <div />
   );
 
-const RenderComments = ({ comments, dishId, postComment }) =>
+function RenderComments({ comments, postComment, dishId }) {
   comments != null ? (
     <div className="container">
       <h4>Comments</h4>
@@ -168,7 +168,7 @@ const RenderComments = ({ comments, dishId, postComment }) =>
   ) : (
     <div />
   );
-
+}
 const DishDetail = ({ dish, comments, postComment, isLoading, err }) => {
   if (isLoading) {
     return (

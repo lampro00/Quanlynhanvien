@@ -13,8 +13,12 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-
-function RenderStaffItem(Staff) {
+import Loading from "./LoadingCompoment";
+import { baseUrl } from "../shared/BaseUrl";
+function RenderStaffItem(Staff, Department) {
+  const department = Department.filter(
+    (department) => department.id === Staff.departmentId
+  )[0];
   console.log(Staff);
   return (
     <div>
@@ -29,7 +33,8 @@ function RenderStaffItem(Staff) {
             <li>
               Ngày vào công ty: {dateFormat(Staff.startDate, "dd/mm/yyyy")}{" "}
             </li>
-            <li>Phòng ban: {Staff.department.name} </li>
+
+            <li>Phòng ban: {department.name} </li>
             <li>Số ngày nghỉ còn lại: {Staff.annualLeave} </li>
             <li>Số ngày đã làm thêm: {Staff.overTime} </li>
           </ul>
@@ -39,19 +44,36 @@ function RenderStaffItem(Staff) {
   );
 }
 
-function RenderStaff(props) {
-  return (
-    <div>
+function RenderStaff({ Staff, staffLoading, staffErrMess, Department }) {
+  if (staffLoading) {
+    return (
       <div className="container">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/Nhanvien">Nhân Viên</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>{props.Staff.name}</BreadcrumbItem>
-        </Breadcrumb>
-        <div className="row">{RenderStaffItem(props.Staff)}</div>
+        <div className="row">
+          <Loading />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else if (staffErrMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{staffErrMess}</h4>
+        </div>
+      </div>
+    );
+  } else if (Staff != null)
+    return (
+      <div>
+        <div className="container">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/Nhanvien">Nhân Viên</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{Staff.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="row">{RenderStaffItem(Staff, Department)}</div>
+        </div>
+      </div>
+    );
 }
 export default RenderStaff;

@@ -39,9 +39,10 @@ ol.breadcrumb {
 }
 .button:hover {
   cursor: pointer;
+
 }
 .department {
-  background-color: #9575cd;
+  background-color: #9c8fb4;
 }
 .salary {
   background-color: #75c6cd;

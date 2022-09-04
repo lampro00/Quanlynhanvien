@@ -15,6 +15,8 @@ import {
   addStaff,
   fetchDepartment,
   fetchSalary,
+  postStaff,
+  deleteStaff,
 } from "../redux/actionCreators";
 import { actions } from "react-redux-form";
 
@@ -27,9 +29,29 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // addStaff: (staff) => {
-  //   dispatch(addStaff(staff));
-  // },
+  postStaff: (
+    id,
+    name,
+    departmentId,
+    doB,
+    startDate,
+    salaryScale,
+    annualLeave,
+    overTime
+  ) => {
+    dispatch(
+      postStaff(
+        id,
+        name,
+        departmentId,
+        doB,
+        startDate,
+        salaryScale,
+        annualLeave,
+        overTime
+      )
+    );
+  },
   fetchStaff: () => {
     dispatch(fetchStaff());
   },
@@ -38,6 +60,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchSalary: () => {
     dispatch(fetchSalary());
+  },
+  deleteStaff: (id) => {
+    dispatch(deleteStaff(id));
   },
 });
 class Main extends Component {
@@ -85,7 +110,13 @@ class Main extends Component {
           <Route
             exact
             path="/Staff"
-            component={() => <StaffList staffs={this.props.staff} />}
+            component={() => (
+              <StaffList
+                staffs={this.props.staff}
+                postStaff={this.props.postStaff}
+                deleteStaff={this.props.deleteStaff}
+              />
+            )}
           />
 
           <Route path="/Nhanvien/:a" component={StaffWithId} />

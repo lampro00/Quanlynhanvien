@@ -1,6 +1,7 @@
 import * as AT from "./actionTypes";
 
 import { baseUrl } from "../shared/BaseUrl";
+import { object } from "prop-types";
 
 // Staff--------------------------------
 export const addStaff = (Staff) => ({ type: AT.ADD_STAFF, payload: Staff });
@@ -109,4 +110,78 @@ export const fetchSalary = () => (dispatch) => {
     .then((response) => response.json())
     .then((Salary) => dispatch(addSalary(Salary)))
     .catch((error) => dispatch(SalaryFailed(error.message)));
+};
+//-------add staff-------------
+export const addnewStaff = (Staff) => ({
+  type: AT.ADD_NEWSTAFF,
+
+  payload: Staff,
+});
+
+export const postStaff =
+  (
+    id,
+    name,
+    departmentId,
+    doB,
+    salaryScale,
+    startDate,
+    annualLeave,
+    overTime
+  ) =>
+  (dispatch) => {
+    const newStaff = {
+      id: id,
+      departmentId: departmentId,
+      name: name,
+      doB: doB,
+      salaryScale: salaryScale,
+      startDate: startDate,
+      annualLeave: annualLeave,
+      overTime: overTime,
+      image: "/assets/images/alberto.png",
+    };
+    return fetch(baseUrl + "staffs", {
+      method: "post",
+      body: JSON.stringify(newStaff),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => dispatch(addnewStaff(response)))
+      .catch((error) => {
+        console.log("post comments", error.message);
+        alert("Your staff could not be posted\nError: " + error.message);
+      });
+  };
+//-------delete staff-------------
+export const deleteStaffss = (id) => ({
+  type: AT.STAFF_DELETESTAFF,
+  payload: id,
+});
+export const Loadingdelete = (id) => ({
+  type: AT.STAFF_DELETESTAFFLOADING,
+});
+export const deleteStaff = (id) => (dispatch) => {
+  return fetch(baseUrl + `staffs/${id}`, {
+    method: "DELETE",
+  }).then(() => dispatch(deleteStaffss(id)));
 };

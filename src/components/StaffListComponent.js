@@ -58,6 +58,7 @@ class StaffList extends Component {
     this.handlesubmit = this.handlesubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   handlclick = (field) => (evt) => {
     this.setState({
@@ -90,24 +91,31 @@ class StaffList extends Component {
   };
 
   handlesubmit(value) {
-    const newStaff = {
-      id: this.props.staffs.length,
-      name: value.name,
-      doB: value.doB,
-      salaryScale: value.salaryScale,
-      startDate: value.startDate,
-      department: {
-        name: value.department,
-      },
-      annualLeave: value.annualLeave,
-      overTime: value.overTime,
-      image: "/assets/images/alberto.png",
-    };
-    console.log(this.props.staffs);
-    this.props.staffs.push(newStaff);
+    let a = "";
+    value.department === "IT" ? (a = "Dept04") : "";
+    value.department === "Sale" ? (a = "Dept01") : "";
+    value.department === "HR" ? (a = "Dept02") : "";
+    value.department === "Marketing" ? (a = "Dept03") : "";
+    value.department === "Finance" ? (a = "Dept05") : "";
+
+    this.props.postStaff(
+      this.props.staffs.length,
+      value.name,
+      a,
+      value.doB,
+      value.startDate,
+      value.salaryScale,
+      value.annualLeave,
+      value.overTime
+    );
+
     this.setState({
       isModalOpen: !this.state.isModalOpen,
     });
+  }
+  handleDelete(value) {
+    this.props.deleteStaff(value);
+    console.log(value);
   }
   render() {
     const required = (val) => val && val.length;
@@ -134,6 +142,7 @@ class StaffList extends Component {
         </div>
       );
     } else if (this.props.staffs.Staff.length != 0) {
+      console.log(this.props.staffs.Staff);
       const search = this.props.staffs.Staff.filter((el) => {
         if (el.name.toUpperCase().includes(this.state.input) === true) {
           return el;
@@ -141,13 +150,20 @@ class StaffList extends Component {
       });
       const Nhanvien = search.map((staff) => {
         return (
-          <div className="col-6 col-xl-2 col-md-4">
+          <div className="col-6 col-xl-2 col-md-4 mb-3">
             <Link to={`/Nhanvien/${staff.id}`}>
               <CardImg src={staff.image} alt="Nhân viên"></CardImg>
               <Card>
                 <CardTitle className="text-center">{staff.name}</CardTitle>
               </Card>
             </Link>
+            <Button
+              id="buttondelete"
+              className="buttondelete"
+              onClick={() => this.handleDelete(staff.id)}
+            >
+              Delete
+            </Button>
           </div>
         );
       });
@@ -229,7 +245,6 @@ class StaffList extends Component {
                           required: "Yêu cầu nhập",
                         }}
                       />
-                    
                     </Col>
                   </Row>
                   <Row className="form-group">

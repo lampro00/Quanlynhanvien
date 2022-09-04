@@ -39,7 +39,6 @@ ol.breadcrumb {
 }
 .button:hover {
   cursor: pointer;
-
 }
 .department {
   background-color: #9c8fb4;
@@ -55,4 +54,10 @@ button.btn.btn-secondary {
 }
 .input {
   display: inline-flex;
+}
+#buttondelete {
+  background-color: red;
+  margin-left: 26%;
+}
+button.btn.btn-secondary {
 }

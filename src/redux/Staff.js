@@ -25,7 +25,8 @@ export const Staff = (
     case ActionTypes.STAFF_DELETESTAFF:
       const filter = state.Staff.filter((staff) => staff.id != action.payload);
       return { ...state, Staff: filter };
-
+    case ActionTypes.STAFF_UPDATE:
+      return { ...state, Staff: action.payload };
     default:
       return state;
   }

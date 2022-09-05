@@ -43,17 +43,8 @@ function handlesubmit(value) {
   value.department === "Marketing" ? (a = "Dept03") : "";
   value.department === "Finance" ? (a = "Dept05") : "";
   console.log(a);
-  // this.props.postStaff(
-  //   this.props.staffs.length,
-  //   value.name,
-  //   a,
-  //   value.doB,
-  //   value.startDate,
-  //   value.salaryScale,
-  //   value.annualLeave,
-  //   value.overTime
-  // );
 }
+
 function Example(Staff, Department) {
   const [modal, setModal] = useState(false);
 
@@ -90,7 +81,6 @@ function Example(Staff, Department) {
                   model=".doB"
                   id="doB"
                   name="doB"
-                  placeholder={Staff.doB}
                   className="form-control"
                 />
                 <Errors className="text-danger" model=".doB" show="touched" />
@@ -104,7 +94,6 @@ function Example(Staff, Department) {
                   model=".startDate"
                   id="startDate"
                   name="startDate"
-                  placeholder={Staff.startDate}
                   className="form-control"
                 />
               </Col>
@@ -149,6 +138,8 @@ function Example(Staff, Department) {
                   name="annualLeave"
                   placeholder={Staff.annualLeave}
                   className="form-control"
+                  onBlur={this.handleBlur("annualLeave")}
+                  onChange={this.handleInputChange}
                 />
               </Col>
             </Row>

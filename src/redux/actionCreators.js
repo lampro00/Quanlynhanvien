@@ -185,3 +185,41 @@ export const deleteStaff = (id) => (dispatch) => {
     method: "DELETE",
   }).then(() => dispatch(deleteStaffss(id)));
 };
+//------------------------update stasff---
+export const updateStaffss = (Staff) => ({
+  type: AT.STAFF_UPDATE,
+  payload: Staff,
+});
+
+export const updateStaff = (staff) => (dispatch) => {
+  return fetch(baseUrl + "staffs", {
+    method: "patch",
+    body: JSON.stringify(staff),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => dispatch(updateStaff(response)))
+    .catch((error) => {
+      console.log("post comments", error.message);
+      alert("Your staff could not be update\nError: " + error.message);
+    });
+};

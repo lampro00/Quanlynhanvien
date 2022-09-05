@@ -17,6 +17,7 @@ import {
   fetchSalary,
   postStaff,
   deleteStaff,
+  updateStaff,
 } from "../redux/actionCreators";
 import { actions } from "react-redux-form";
 
@@ -51,6 +52,9 @@ const mapDispatchToProps = (dispatch) => ({
         overTime
       )
     );
+  },
+  updateStaff: () => {
+    dispatch(updateStaff());
   },
   fetchStaff: () => {
     dispatch(fetchStaff());
